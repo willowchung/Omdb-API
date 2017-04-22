@@ -52,6 +52,7 @@ public class SignInActivity extends AppCompatActivity implements
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
+                .requestId()
                 .build();
         // [END configure_signin]
 
@@ -118,6 +119,11 @@ public class SignInActivity extends AppCompatActivity implements
             GoogleSignInAccount acct = result.getSignInAccount();
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
+
+            Intent myIntent = new Intent(SignInActivity.this, BuscaScrollActivity.class);
+            myIntent.putExtra("userEmail", acct.getEmail());
+            SignInActivity.this.startActivity(myIntent);
+
         } else {
             // Signed out, show unauthenticated UI.
             updateUI(false);
