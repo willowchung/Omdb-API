@@ -1,7 +1,9 @@
 package br.edu.infnet.avaliacao.omdb;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -19,17 +21,21 @@ import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
+import br.edu.infnet.avaliacao.omdb.interfaces.ISharedPreferences;
+
 /**
  * Activity to demonstrate basic retrieval of the Google user's ID, email address, and basic
  * profile.
  */
 public class SignInActivity extends AppCompatActivity implements
-        GoogleApiClient.OnConnectionFailedListener,
-        View.OnClickListener {
+        ISharedPreferences,
+                                            GoogleApiClient.OnConnectionFailedListener,
+                                            View.OnClickListener {
 
     private static final String TAG = "SignInActivity";
     private static final int RC_SIGN_IN = 9001;
 
+    private SharedPreferences sharedPreferences;
     private GoogleApiClient mGoogleApiClient;
     private TextView mStatusTextView;
     private ProgressDialog mProgressDialog;
@@ -68,8 +74,10 @@ public class SignInActivity extends AppCompatActivity implements
         // [START customize_button]
         // Set the dimensions of the sign-in button.
         SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        signInButton.setSize(SignInButton.SIZE_WIDE);
         // [END customize_button]
+
+        sharedPreferences = this.getSharedPreferences(sharedPreferencesKey, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -120,9 +128,11 @@ public class SignInActivity extends AppCompatActivity implements
             mStatusTextView.setText(getString(R.string.signed_in_fmt, acct.getDisplayName()));
             updateUI(true);
 
+            sharedPreferences.edit().putString(accountIdKey, acct.getId()).apply();
+
             Intent myIntent = new Intent(SignInActivity.this, BuscaScrollActivity.class);
-            myIntent.putExtra("userEmail", acct.getEmail());
             SignInActivity.this.startActivity(myIntent);
+            //finish();
 
         } else {
             // Signed out, show unauthenticated UI.

@@ -35,6 +35,16 @@
             android:textSize="36sp" />
 
         <TextView
+            android:id="@+id/subtitle_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/subtitle_text"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:textSize="15sp"
+            />
+
+        <TextView
             android:id="@+id/status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

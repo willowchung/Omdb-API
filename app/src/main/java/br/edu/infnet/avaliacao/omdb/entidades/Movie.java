@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by Willow on 21/04/2017.
  */
 
-public class Filme{
+public class Movie {
 
     private static final String FIELD_PLOT = "Plot";
     private static final String FIELD_YEAR = "Year";
@@ -75,7 +75,7 @@ public class Filme{
     private String mDirector;
 
 
-    public Filme(){
+    public Movie(){
 
     }
 
