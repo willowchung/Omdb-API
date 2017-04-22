@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "848214796865",
+    "project_id": "infnet-omdb"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848214796865:android:7d4afe99d92e7056",
+        "android_client_info": {
+          "package_name": "br.edu.infnet.avaliacao.omdb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848214796865-7unvb7t3m6ej6m2u9t82thje54eoqeui.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "848214796865-v7ibs5nndt6mlki9u1qcpbr0asul3tnb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.edu.infnet.avaliacao.omdb",
+            "certificate_hash": "b3029e71acd5858cebb9df6255e03af0e65eab68"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDZ7rIYE5JP-ZePJqQL9FrVgrwRxcjzgqM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
