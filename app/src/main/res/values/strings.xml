@@ -2,6 +2,18 @@
     <string name="app_name">Infnet Omdb</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">Sign in</string>
+    <string name="title_text">Google Sign-In\nQuickstart</string>
+
+    <string name="signed_in_fmt">Signed in as: %s</string>
+    <string name="loading">Loading…</string>
+    <string name="signed_out">Signed out</string>
+
+    <!-- Button labels -->
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+
+    <!-- Content Description for images -->
+    <string name="desc_google_icon">Google Logo</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -15,4 +27,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="server_client_id">AIzaSyD_QTH0q3msRMd_r3wGJV-lvJoVmwpRSDQ</string>
 </resources>
