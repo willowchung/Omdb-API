@@ -15,11 +15,10 @@ import java.util.List;
 import br.edu.infnet.avaliacao.omdb.R;
 import br.edu.infnet.avaliacao.omdb.entidades.Movie;
 import br.edu.infnet.avaliacao.omdb.fragments.MovieFragment.OnListFragmentInteractionListener;
-import br.edu.infnet.avaliacao.omdb.fragments.dummy.DummyContent.DummyItem;
 import br.edu.infnet.avaliacao.omdb.repository.FavoritesDB;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Movie} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */

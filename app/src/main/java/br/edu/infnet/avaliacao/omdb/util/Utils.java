@@ -19,6 +19,11 @@ public class Utils {
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
     }
 
+    public static void showKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(activity.getCurrentFocus(), 0);
+    }
+
     /**
      * Returns true if the network is available or about to become available.
      */

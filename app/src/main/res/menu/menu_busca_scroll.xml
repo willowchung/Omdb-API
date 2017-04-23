@@ -8,13 +8,13 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
-    <item
+    <!--<item
         android:id="@+id/action_search"
         android:orderInCategory="200"
         android:title="Search"
         android:icon="@drawable/common_full_open_on_phone"
         app:showAsAction="always"
-        ></item>
+        ></item>-->
 
     <item
         android:id="@+id/action_favorites"

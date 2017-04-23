@@ -19,6 +19,7 @@ import java.util.List;
 import br.edu.infnet.avaliacao.omdb.R;
 import br.edu.infnet.avaliacao.omdb.entidades.Movie;
 import br.edu.infnet.avaliacao.omdb.entidades.OmdbAPI;
+import br.edu.infnet.avaliacao.omdb.repository.FavoritesDB;
 import cz.msebera.android.httpclient.Header;
 
 /**
@@ -157,14 +158,21 @@ public class MovieFragment extends Fragment {
                         //Toast.makeText(getContext(), "No movies found" , Toast.LENGTH_SHORT).show();
                     }
 
-                    mAdapter = new MovieRecyclerViewAdapter(userId, movies, mListener);
-                    mRecyclerView.setAdapter(mAdapter);
-
+                    setAdapter(movies);
                 } catch (Exception e) {
                     //Toast.makeText(getContext(), "Erro parsing" , Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
 
+    public void loadFavorites() {
+        FavoritesDB favoritesDB = FavoritesDB.getInstance(getContext());
+        setAdapter(favoritesDB.getMovies(null, userId));
+    }
+
+    private void setAdapter(List<Movie> movies) {
+        mAdapter = new MovieRecyclerViewAdapter(userId, movies, mListener);
+        mRecyclerView.setAdapter(mAdapter);
     }
 }
