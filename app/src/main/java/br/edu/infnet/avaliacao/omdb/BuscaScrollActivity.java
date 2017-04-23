@@ -61,7 +61,7 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
         mEditText.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         mEditText.setSingleLine(true);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,12 +69,13 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
                         .setAction("Action", null).show();
                 appBarLayout.setExpanded(false, true);
             }
-        });
+        });*/
     }
 
     @Override
     public void onListFragmentInteraction(Movie item) {
         //TODO WW: Abrir detalhes do Filme
+        String s = "";
     }
 
     private void setAppBarListener() {
@@ -83,7 +84,12 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
         appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                Log.d("STATE", state.name());
+                /*if (state.name().equals(State.COLLAPSED)) {
+                    findViewById(R.id.moviesSearchEditText).setVisibility(View.GONE);
+                }
+                if (state.name().equals(State.EXPANDED)) {
+                    findViewById(R.id.moviesSearchEditText).setVisibility(View.VISIBLE);
+                }*/
             }
         });
     }
@@ -98,6 +104,10 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
 
     private void searchMovies() {
         Utils.hideKeyboard(BuscaScrollActivity.this);
+        EditText editText = (EditText) findViewById(R.id.moviesSearchEditText);
+        editText.setVisibility(View.GONE);
+
+
         appBarLayout.setExpanded(false, true);
         findViewById(R.id.progress_spinner).setVisibility(View.VISIBLE);
 

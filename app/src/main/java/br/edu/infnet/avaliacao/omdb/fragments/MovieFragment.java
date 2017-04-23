@@ -136,7 +136,6 @@ public class MovieFragment extends Fragment {
 
     public void search(String searchText) {
 
-
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(omdbAPI + searchText, new TextHttpResponseHandler() {
             @Override

@@ -41,7 +41,7 @@
             tools:text="The Shawshank Redemption"
             android:layout_below="@+id/thumbnail"
             android:ellipsize="end"
-            android:maxLines="4" />
+            android:maxLines="2" />
 
         <TextView
             android:id="@+id/movie_director"
