@@ -110,7 +110,7 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
     private void searchMovies() {
         Utils.hideKeyboard(BuscaScrollActivity.this);
         EditText editText = (EditText) findViewById(R.id.moviesSearchEditText);
-        editText.setVisibility(View.GONE);
+//        editText.setVisibility(View.GONE);
 
 
         appBarLayout.setExpanded(false, true);

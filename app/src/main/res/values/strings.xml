@@ -10,8 +10,9 @@
     <string name="signed_out">Usuário não conectado</string>
 
     <!-- Button labels -->
-    <string name="sign_out">Sign Out</string>
-    <string name="disconnect">Disconnect</string>
+    <string name="search_movies">Buscar Filmes!</string>
+    <string name="sign_out">Deslogar</string>
+    <string name="disconnect">Desconectar</string>
 
     <!-- Content Description for images -->
     <string name="desc_google_icon">Google Logo</string>

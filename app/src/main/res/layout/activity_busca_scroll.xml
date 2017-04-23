@@ -29,33 +29,19 @@
                 android:minHeight="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <EditText
+                    android:id="@+id/moviesSearchEditText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    android:textColorHint="@color/common_google_signin_btn_text_dark_default"
+                    android:hint="Digite a busca..."/>
+
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-    <!--<fragment android:name="br.edu.infnet.avaliacao.omdb.fragments.MovieFragment"
-        android:id="@+id/movie_fragment"
-        android:layout_weight="2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />-->
-
-    <!--<android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_anchor="@id/app_bar"
-        app:layout_anchorGravity="bottom|end"
-        app:srcCompat="@android:drawable/ic_search_category_default" />-->
-
-    <EditText
-        android:id="@+id/moviesSearchEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/common_google_signin_btn_text_dark_default"
-        android:textColorHint="@color/common_google_signin_btn_text_dark_default"
-        android:hint="Digite a busca..."/>
 
     <ProgressBar
         android:id="@+id/progress_spinner"
