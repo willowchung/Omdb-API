@@ -37,6 +37,9 @@ public class MovieFragment extends Fragment {
     private OnListFragmentInteractionListener mListener;
     private List<Movie> movieList = new ArrayList<>();
     private final String omdbAPI = "http://www.omdbapi.com/?type=Movie&s=";
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.Adapter mAdapter;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -71,8 +74,22 @@ public class MovieFragment extends Fragment {
 
         //this.movieList = (List<Movie>) getArguments().get("movieList");
 
+
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(view.getContext());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        mRecyclerView.setAdapter(new MovieRecyclerViewAdapter(movieList, mListener));
+
+
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        /*if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
             if (mColumnCount <= 1) {
@@ -81,7 +98,7 @@ public class MovieFragment extends Fragment {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
             recyclerView.setAdapter(new MovieRecyclerViewAdapter(movieList, mListener));
-        }
+        }*/
         return view;
     }
 
@@ -142,8 +159,8 @@ public class MovieFragment extends Fragment {
                         //Toast.makeText(getContext(), "No movies found" , Toast.LENGTH_SHORT).show();
                     }
 
-                    /*mAdapter = new FilmesAdapter(movies);
-                    mRecyclerView.setAdapter(mAdapter);*/
+                    mAdapter = new MovieRecyclerViewAdapter(movies, mListener);
+                    mRecyclerView.setAdapter(mAdapter);
 
                 } catch (Exception e) {
                     //Toast.makeText(getContext(), "Erro parsing" , Toast.LENGTH_SHORT).show();
