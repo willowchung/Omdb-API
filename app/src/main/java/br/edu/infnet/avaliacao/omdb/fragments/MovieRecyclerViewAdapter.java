@@ -1,10 +1,14 @@
 package br.edu.infnet.avaliacao.omdb.fragments;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 
 import br.edu.infnet.avaliacao.omdb.R;
 import br.edu.infnet.avaliacao.omdb.entidades.Movie;
@@ -22,10 +26,12 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     private final List<Movie> moviesList;
     private final OnListFragmentInteractionListener mListener;
+    private Context mContext;
 
-    public MovieRecyclerViewAdapter(List<Movie> items, OnListFragmentInteractionListener listener) {
+    public MovieRecyclerViewAdapter(List<Movie> items, OnListFragmentInteractionListener listener, Context context) {
         moviesList = items;
         mListener = listener;
+        mContext = context;
     }
 
     @Override
@@ -37,10 +43,14 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.movie = moviesList.get(position);
-        holder.mTitle.setText(moviesList.get(position).getTitle());
-        holder.mDirector.setText(moviesList.get(position).getDirector());
-        holder.mYear.setText(moviesList.get(position).getYear());
+        Movie movie = moviesList.get(position);
+        holder.movie = movie;
+        holder.mTitle.setText(movie.getTitle());
+        holder.mDirector.setText(movie.getDirector());
+        holder.mYear.setText(movie.getYear());
+
+        holder.mImageView.layout(0, 0, 0, 0); // invalidate the width so that glide wont use that dimension
+        Glide.with(mContext).load(movie.getPoster()).into(holder.mImageView);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +71,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
+        public final ImageView mImageView;
         public final TextView mTitle;
         public final TextView mDirector;
         public final TextView mYear;
@@ -69,6 +80,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         public ViewHolder(View view) {
             super(view);
             mView = view;
+            mImageView = (ImageView) view.findViewById(R.id.thumbnail);
             mTitle = (TextView) view.findViewById(R.id.movie_title);
             mDirector = (TextView) view.findViewById(R.id.movie_director);
             mYear = (TextView) view.findViewById(R.id.movie_year);
