@@ -10,12 +10,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.List;
+
 import br.edu.infnet.avaliacao.omdb.R;
 import br.edu.infnet.avaliacao.omdb.entidades.Movie;
 import br.edu.infnet.avaliacao.omdb.fragments.MovieFragment.OnListFragmentInteractionListener;
 import br.edu.infnet.avaliacao.omdb.fragments.dummy.DummyContent.DummyItem;
-
-import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
@@ -28,10 +28,9 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
     private final OnListFragmentInteractionListener mListener;
     private Context mContext;
 
-    public MovieRecyclerViewAdapter(List<Movie> items, OnListFragmentInteractionListener listener, Context context) {
+    public MovieRecyclerViewAdapter(List<Movie> items, OnListFragmentInteractionListener listener) {
         moviesList = items;
         mListener = listener;
-        mContext = context;
     }
 
     @Override
@@ -50,7 +49,7 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
         holder.mYear.setText(movie.getYear());
 
         holder.mImageView.layout(0, 0, 0, 0); // invalidate the width so that glide wont use that dimension
-        Glide.with(mContext).load(movie.getPoster()).into(holder.mImageView);
+        Glide.with(holder.mImageView.getContext()).load(movie.getPoster()).into(holder.mImageView);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

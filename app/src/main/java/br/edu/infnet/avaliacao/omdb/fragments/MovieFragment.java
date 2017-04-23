@@ -39,7 +39,6 @@ public class MovieFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private RecyclerView.Adapter mAdapter;
-    private Context mContext;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -73,7 +72,6 @@ public class MovieFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movie_list, container, false);
 
         //this.movieList = (List<Movie>) getArguments().get("movieList");
-        mContext = view.getContext();
         mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
 
         // use this setting to improve performance if you know that changes
@@ -84,7 +82,7 @@ public class MovieFragment extends Fragment {
         mLayoutManager = new LinearLayoutManager(view.getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mRecyclerView.setAdapter(new MovieRecyclerViewAdapter(movieList, mListener, mContext));
+        mRecyclerView.setAdapter(new MovieRecyclerViewAdapter(movieList, mListener));
 
 
         // Set the adapter
@@ -157,7 +155,7 @@ public class MovieFragment extends Fragment {
                         //Toast.makeText(getContext(), "No movies found" , Toast.LENGTH_SHORT).show();
                     }
 
-                    mAdapter = new MovieRecyclerViewAdapter(movies, mListener, mContext);
+                    mAdapter = new MovieRecyclerViewAdapter(movies, mListener);
                     mRecyclerView.setAdapter(mAdapter);
 
                 } catch (Exception e) {
