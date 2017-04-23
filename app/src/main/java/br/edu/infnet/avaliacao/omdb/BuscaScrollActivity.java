@@ -7,9 +7,8 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -17,25 +16,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.TextHttpResponseHandler;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import br.edu.infnet.avaliacao.omdb.adapters.FilmesAdapter;
 import br.edu.infnet.avaliacao.omdb.entidades.Movie;
-import br.edu.infnet.avaliacao.omdb.entidades.OmdbAPI;
+import br.edu.infnet.avaliacao.omdb.fragments.MovieFragment;
 import br.edu.infnet.avaliacao.omdb.interfaces.ISharedPreferences;
 import br.edu.infnet.avaliacao.omdb.listeners.AppBarStateChangeListener;
-import cz.msebera.android.httpclient.Header;
+import br.edu.infnet.avaliacao.omdb.util.Utils;
 
-import static java.security.AccessController.getContext;
-
-public class BuscaScrollActivity extends AppCompatActivity implements ISharedPreferences, View.OnClickListener {
+public class BuscaScrollActivity extends AppCompatActivity implements ISharedPreferences,
+                            View.OnClickListener,
+                            MovieFragment.OnListFragmentInteractionListener {
     public enum State {
         EXPANDED,
         COLLAPSED,
@@ -46,13 +36,7 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
     private String accountID;
     private AppBarLayout appBarLayout;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
-
-    private final String omdbAPI = "http://www.omdbapi.com/?type=Movie&s=";
     private EditText mEditText;
-
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +50,11 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
 
         setAppBarListener();
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
+        //Instanciando Fragment
+        MovieFragment movieFragment = new MovieFragment(); //Novo Fragment
+        movieFragment.setArguments(getIntent().getExtras());
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, movieFragment, "movieList").commit();
+        //addFragment(R.id.fragment_container, movieFragment, "movieList");
 
         mEditText = (EditText) findViewById(R.id.moviesSearchEditText);
         mEditText.setOnClickListener(this);
@@ -88,6 +72,11 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
         });
     }
 
+    @Override
+    public void onListFragmentInteraction(Movie item) {
+        //TODO WW: Abrir detalhes do Filme
+    }
+
     private void setAppBarListener() {
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
         appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
@@ -99,45 +88,27 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
         });
     }
 
+    private void addFragment(int containerViewId, Fragment fragment, String fragmentTag) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(containerViewId, fragment, fragmentTag)
+                .disallowAddToBackStack()
+                .commit();
+    }
+
     private void searchMovies() {
+        Utils.hideKeyboard(BuscaScrollActivity.this);
         appBarLayout.setExpanded(false, true);
         findViewById(R.id.progress_spinner).setVisibility(View.VISIBLE);
-        String searchText = mEditText.getText().toString();
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.get(omdbAPI + searchText, new TextHttpResponseHandler() {
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                findViewById(R.id.progress_spinner).setVisibility(View.GONE);
-                //Toast.makeText(getContext(), "Connection Error" , Toast.LENGTH_SHORT).show();
-            }
+        String searchText = mEditText.getText().toString().trim();
 
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                findViewById(R.id.progress_spinner).setVisibility(View.GONE);
-                try {
-                    Gson gson = new Gson();
-                    OmdbAPI omdbAPI = gson.fromJson(responseString, OmdbAPI.class);
-                    List<Movie> movies = omdbAPI.getMovieList();
+//        MovieFragment movieFragment = (MovieFragment)getSupportFragmentManager().findFragmentByTag("favorites");
+//        if(movieFragment == null) {
+        MovieFragment movieFragment = (MovieFragment)getSupportFragmentManager().findFragmentByTag("movieList");
+//        }
 
-                    if(movies == null) {
-                        movies = new ArrayList<Movie>();
-                        //Toast.makeText(getContext(), "No movies found" , Toast.LENGTH_SHORT).show();
-                    }
-
-                    mAdapter = new FilmesAdapter(movies);
-                    mRecyclerView.setAdapter(mAdapter);
-
-                } catch (Exception e) {
-                    //Toast.makeText(getContext(), "Erro parsing" , Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-
-        /*// specify an adapter (see also next example)
-        mAdapter = new FilmesAdapter(myDataset);
-        mRecyclerView.setAdapter(mAdapter);*/
+        movieFragment.search(searchText);
     }
 
     @Override
