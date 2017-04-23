@@ -50,9 +50,14 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
 
         setAppBarListener();
 
+
         //Instanciando Fragment
+        String userId = sharedPreferences.getString(accountIdKey, null);
+        Bundle bundle = new Bundle();
+        bundle.putString("userId", userId);
+
         MovieFragment movieFragment = new MovieFragment(); //Novo Fragment
-        movieFragment.setArguments(getIntent().getExtras());
+        movieFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, movieFragment, "movieList").commit();
         //addFragment(R.id.fragment_container, movieFragment, "movieList");
 
