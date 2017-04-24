@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -24,19 +25,22 @@ import br.edu.infnet.avaliacao.omdb.listeners.AppBarStateChangeListener;
 import br.edu.infnet.avaliacao.omdb.util.Utils;
 
 public class BuscaScrollActivity extends AppCompatActivity implements ISharedPreferences,
-                                        MovieFragment.OnListFragmentInteractionListener {
-    public enum State {
+                                        MovieFragment.OnListFragmentInteractionListener  {
+
+    /*public enum State {
         EXPANDED,
         COLLAPSED,
         IDLE
     }
-    private AppBarStateChangeListener.State mCurrentState = AppBarStateChangeListener.State.IDLE;
+    private AppBarStateChangeListener.State mCurrentState = AppBarStateChangeListener.State.IDLE;*/
+    private Menu mMenu;
     private SharedPreferences sharedPreferences;
     private String accountID;
-    private AppBarLayout appBarLayout;
+    private AppBarLayout mAppBarLayout;
     private CollapsingToolbarLayout mCollapsingToolbarLayout;
+    private Toolbar mToolbar;
     private EditText mEditText;
-    private MovieFragment movieFragment;
+    private MovieFragment mMovieFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +52,8 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setAppBarListener();
         setEditTextListener();
+        setAppBarListener();
         setFragment();
 
         /*FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -58,7 +62,7 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                appBarLayout.setExpanded(false, true);
+                mAppBarLayout.setExpanded(false, true);
             }
         });*/
     }
@@ -69,10 +73,9 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
         Bundle bundle = new Bundle();
         bundle.putString("userId", userId);
 
-        movieFragment = new MovieFragment(); //Novo Fragment
-        movieFragment.setArguments(bundle);
-        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, movieFragment, "movieList").commit();
-        //addFragment(R.id.fragment_container, movieFragment, "movieList");
+        mMovieFragment = new MovieFragment(); //Novo Fragment
+        mMovieFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, mMovieFragment, "movieList").commit();
     }
 
     private void setEditTextListener() {
@@ -93,48 +96,42 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
 
     private void setAppBarListener() {
         mCollapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.toolbar_layout);
-        appBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
-        appBarLayout.addOnOffsetChangedListener(new AppBarStateChangeListener() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mAppBarLayout = (AppBarLayout) findViewById(R.id.app_bar);
+        /*mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
-            public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                /*if (state.name().equals(State.COLLAPSED)) {
-                    findViewById(R.id.moviesSearchEditText).setVisibility(View.GONE);
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (verticalOffset == -mCollapsingToolbarLayout.getHeight() + mToolbar.getHeight()) {
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
                 }
-                if (state.name().equals(State.EXPANDED)) {
-                    findViewById(R.id.moviesSearchEditText).setVisibility(View.VISIBLE);
-                }*/
+                else if (verticalOffset == 0) {
+                    mEditText.requestFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(mEditText, InputMethodManager.SHOW_IMPLICIT);
+                }
             }
-        });
+        });*/
     }
 
     @Override
     public void onListFragmentInteraction(Movie item) {
         //TODO WW: Abrir detalhes do Filme
-        String s = "";
-    }
-
-    private void addFragment(int containerViewId, Fragment fragment, String fragmentTag) {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(containerViewId, fragment, fragmentTag)
-                .disallowAddToBackStack()
-                .commit();
     }
 
     private void searchMovies() {
         Utils.hideKeyboard(BuscaScrollActivity.this);
-        EditText editText = (EditText) findViewById(R.id.moviesSearchEditText);
-//        editText.setVisibility(View.GONE);
 
-        appBarLayout.setExpanded(false, true);
+        mAppBarLayout.setExpanded(false, true);
         findViewById(R.id.progress_spinner).setVisibility(View.VISIBLE);
 
         String searchText = mEditText.getText().toString().trim();
-        movieFragment.search(searchText);
+        mMovieFragment.search(searchText);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        mMenu = menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_busca_scroll, menu);
         return true;
@@ -147,15 +144,18 @@ public class BuscaScrollActivity extends AppCompatActivity implements ISharedPre
             case R.id.action_settings:
                 return true;
             case R.id.action_favorites:
+                Drawable favoriteSelected = ContextCompat.getDrawable(this, R.drawable.ic_favorite_white_24dp);
+                Drawable favoriteUnselected = ContextCompat.getDrawable(this, R.drawable.ic_favorite_border_white_24dp);
 
-                if (item.getIcon().equals(Drawable.createFromPath("@drawable/ic_favorite_white_24dp"))) {
-                    item.setIcon(Drawable.createFromPath("@drawable/ic_favorite_border_white_24dp"));
+                if (item.getIcon().getCurrent().getConstantState().equals(favoriteUnselected.getConstantState())) {
+                    mMenu.getItem(1).setIcon(favoriteSelected);
+                    mMovieFragment.loadFavorites();
                 }
                 else {
-                    item.setIcon(Drawable.createFromPath("@drawable/ic_favorite_white_24dp"));
+                    mMenu.getItem(1).setIcon(favoriteUnselected);
+                    searchMovies();
                 }
 
-                movieFragment.loadFavorites();
                 return true;
         }
 

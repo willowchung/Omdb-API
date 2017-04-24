@@ -82,6 +82,9 @@ public class MovieRecyclerViewAdapter extends RecyclerView.Adapter<MovieRecycler
                     favoritesDB.createMovie(holder.movie, userId);
                 } else {
                     favoritesDB.deleteMovie(holder.movie.getImdbID(), userId);
+                    moviesList.remove(holder.getAdapterPosition());
+                    notifyItemRemoved(holder.getAdapterPosition());
+                    notifyItemRangeChanged(holder.getAdapterPosition(), moviesList.size());
                 }
 
                 favoriteButton.setFavorite(!isFavorite);
